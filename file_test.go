@@ -535,3 +535,35 @@ v = 3
 	require.NoError(t, f.Reload())
 	assert.Equal(t, []string{"1", "2", "3"}, f.Section("slice").Key("v").ValueWithShadows())
 }
+
+func TestFile_CustomFormat(t *testing.T) {
+	PrettyFormat = false
+	PrettySectionLines = 2
+	CommentPrefix = ""
+
+	expected := `#Section Info
+[Section]
+
+#Comment
+Field=Test
+
+#Same
+More=2
+
+
+[Other]
+
+#Info
+Note=Hello world!
+`
+
+	f, err := LoadSources(LoadOptions{}, []byte(expected))
+	require.NoError(t, err)
+	require.NotNil(t, f)
+
+	var actual bytes.Buffer
+	_, err = f.WriteTo(&actual)
+	require.NoError(t, err)
+
+	assert.Equal(t, expected, actual.String())
+}

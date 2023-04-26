@@ -1,3 +1,23 @@
+# EDITED VERSION - Custom formating
+Change the output with new options: PrettyField, PrettySectionLines, CommentPrefix
+Example:
+
+    #Section Info
+    [Section]
+    
+    #Comment
+    Field=Test
+    
+    #Same
+    More=2
+    
+    
+    [Other]
+    
+    #Info
+    Note=Hello world!
+
+
 # INI
 
 [![GitHub Workflow Status](https://img.shields.io/github/checks-status/go-ini/ini/main?logo=github&style=for-the-badge)](https://github.com/go-ini/ini/actions?query=branch%3Amain)

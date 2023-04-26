@@ -350,9 +350,9 @@ func (f *File) writeToBuffer(indent string) (*bytes.Buffer, error) {
 			lines := strings.Split(sec.Comment, LineBreak)
 			for i := range lines {
 				if lines[i][0] != '#' && lines[i][0] != ';' {
-					lines[i] = "; " + lines[i]
+					lines[i] = ";" + CommentPrefix + lines[i]
 				} else {
-					lines[i] = lines[i][:1] + " " + strings.TrimSpace(lines[i][1:])
+					lines[i] = lines[i][:1] + CommentPrefix + strings.TrimSpace(lines[i][1:])
 				}
 
 				if _, err := buf.WriteString(lines[i] + LineBreak); err != nil {
@@ -380,8 +380,10 @@ func (f *File) writeToBuffer(indent string) (*bytes.Buffer, error) {
 
 			if PrettySection && !isLastSection {
 				// Put a line between sections
-				if _, err := buf.WriteString(LineBreak); err != nil {
-					return nil, err
+				for i := 0; i < PrettySectionLines; i++ {
+					if _, err := buf.WriteString(LineBreak); err != nil {
+						return nil, err
+					}
 				}
 			}
 			continue
@@ -410,6 +412,12 @@ func (f *File) writeToBuffer(indent string) (*bytes.Buffer, error) {
 
 	KeyList:
 		for _, kname := range sec.keyList {
+			if PrettyField { // Put a line before and between fields
+				if _, err := buf.WriteString(LineBreak); err != nil {
+					return nil, err
+				}
+			}
+
 			key := sec.Key(kname)
 			if len(key.Comment) > 0 {
 				if len(indent) > 0 && sname != DefaultSection {
@@ -420,9 +428,9 @@ func (f *File) writeToBuffer(indent string) (*bytes.Buffer, error) {
 				lines := strings.Split(key.Comment, LineBreak)
 				for i := range lines {
 					if lines[i][0] != '#' && lines[i][0] != ';' {
-						lines[i] = "; " + strings.TrimSpace(lines[i])
+						lines[i] = ";" + CommentPrefix + strings.TrimSpace(lines[i])
 					} else {
-						lines[i] = lines[i][:1] + " " + strings.TrimSpace(lines[i][1:])
+						lines[i] = lines[i][:1] + CommentPrefix + strings.TrimSpace(lines[i][1:])
 					}
 
 					if _, err := buf.WriteString(lines[i] + LineBreak); err != nil {
@@ -498,8 +506,10 @@ func (f *File) writeToBuffer(indent string) (*bytes.Buffer, error) {
 
 		if PrettySection && !isLastSection {
 			// Put a line between sections
-			if _, err := buf.WriteString(LineBreak); err != nil {
-				return nil, err
+			for i := 0; i < PrettySectionLines; i++ {
+				if _, err := buf.WriteString(LineBreak); err != nil {
+					return nil, err
+				}
 			}
 		}
 	}

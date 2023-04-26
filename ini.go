@@ -42,8 +42,15 @@ var (
 	// DefaultHeader explicitly writes default section header.
 	DefaultHeader = false
 
+	// CommentPrefix defines the prefix to put between the comment tag and its text.
+	CommentPrefix = " "
+
 	// PrettySection indicates whether to put a line between sections.
 	PrettySection = true
+	// PrettySectionLines indicates the number of lines to put between sections.
+	PrettySectionLines = 1
+	// PrettyField indicates whether to put a line between fields.
+	PrettyField = true
 	// PrettyFormat indicates whether to align "=" sign with spaces to produce pretty output
 	// or reduce all possible spaces for compact format.
 	PrettyFormat = true
